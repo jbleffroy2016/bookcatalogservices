@@ -7,6 +7,12 @@ create table bookcatalog
    primary key(isbn)
 );
 
-insert into bookcatalog (title, authors, isbn, publish_date)
-values
-('Harry Potter', 'J.K.Rowling', '1234567891234', '2021-10-26');
+create table auditlog
+(
+event varchar(255) not null,
+update_time DATE
+);
+
+--insert into bookcatalog (title, authors, isbn, publish_date)
+--values
+--('Harry Potter', 'J.K.Rowling', '1234567891234', '2021-10-26');
