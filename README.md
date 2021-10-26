@@ -1,10 +1,14 @@
 # bookcatalogservices
 
 http://localhost:8080/bookcatalogservices/h2-console
+
 username: tcs
+
 password: tcstest
 
 select * from bookcatalog;
+
+select * from auditlog;
 
 http://localhost:8080/bookcatalogservices/bookcatalog/insertBooks
 
