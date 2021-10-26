@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.tcs.dao.AuditLogDAO;
 import com.tcs.dao.BookCatalogDAO;
 import com.tcs.model.BookVO;
 import com.tcs.service.BookCatalogService;
@@ -18,8 +19,12 @@ public class BookCatalogServiceImpl implements BookCatalogService{
 	@Autowired
 	BookCatalogDAO dao;
 	
+	@Autowired
+	AuditLogDAO auditDao;
+	
 	public List<BookVO> getBooks(String title, String authors, String isbn, LocalDate publishDate) throws Exception {
 		List<BookVO> result = dao.getBooks(title, authors, isbn, publishDate);
+		
 		return result;
 	}
 
@@ -28,7 +33,11 @@ public class BookCatalogServiceImpl implements BookCatalogService{
 			throw new Exception("ISBN of book is mandatory, please specify");
 		}
 		
-		return dao.updateBook(book);
+		dao.updateBook(book);
+		
+		auditDao.updateAuditLog("Updated details of ISBN :: " + book.toString());
+		
+		return 0;
 	}
 
 	public void deleteBook(List<String> isbn) throws Exception {
@@ -36,6 +45,9 @@ public class BookCatalogServiceImpl implements BookCatalogService{
 			throw new Exception("Please specify atleast one ISBN");
 		}
 		dao.deleteBook(isbn);
+		
+		auditDao.updateAuditLog("Deleted records ISBN :: " +  isbn);
+		
 	}
 
 	public void insertBooks(List<BookVO> books) throws Exception {
@@ -43,6 +55,8 @@ public class BookCatalogServiceImpl implements BookCatalogService{
 			throw new Exception("Please specify atleast one book detail");
 		}
 		dao.insertBooks(books);
+		
+		auditDao.updateAuditLog("Inserted books :: " +  books);
 	}
 
 }
